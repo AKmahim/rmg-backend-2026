@@ -17,7 +17,7 @@
     <div class="row">
 
         {{-- Spinner --}}
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-4 col-md-6">
             <div class="card-box tilebox-one">
                 <i class="ri-trophy-line float-right text-warning" style="font-size:24px"></i>
                 <h5 class="text-muted text-uppercase mb-3 mt-0">Spinner Players</h5>
@@ -30,7 +30,7 @@
         </div>
 
         {{-- Quiz --}}
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-4 col-md-6">
             <div class="card-box tilebox-one">
                 <i class="ri-question-answer-line float-right text-primary" style="font-size:24px"></i>
                 <h5 class="text-muted text-uppercase mb-3 mt-0">Quiz Players</h5>
@@ -43,7 +43,7 @@
         </div>
 
         {{-- Total Players --}}
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-4 col-md-6">
             <div class="card-box tilebox-one">
                 <i class="fe-users float-right text-success" style="font-size:24px"></i>
                 <h5 class="text-muted text-uppercase mb-3 mt-0">Total Players</h5>
@@ -54,17 +54,7 @@
             </div>
         </div>
 
-        {{-- Site Views --}}
-        <div class="col-xl-3 col-md-6">
-            <div class="card-box tilebox-one">
-                <i class="fe-eye float-right text-info" style="font-size:24px"></i>
-                <h5 class="text-muted text-uppercase mb-3 mt-0">Site Views</h5>
-                <h3 class="mb-1">{{ $views_total }}</h3>
-                <p class="text-muted mb-0">
-                    <span class="text-muted">{{ $views_today }} today</span>
-                </p>
-            </div>
-        </div>
+        
 
     </div>
 
@@ -82,7 +72,7 @@
 
     {{-- ── Quick Links ─────────────────────────────────────────────────────────── --}}
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body text-center py-4">
                     <i class="ri-trophy-line" style="font-size:40px;color:#f7b731"></i>
@@ -92,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body text-center py-4">
                     <i class="ri-question-answer-line" style="font-size:40px;color:#4a90e2"></i>
@@ -102,16 +92,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center py-4">
-                    <i class="fe-eye" style="font-size:40px;color:#1abc9c"></i>
-                    <h5 class="mt-3 mb-1">Site View Stats</h5>
-                    <p class="text-muted mb-3">Monitor traffic and visitor statistics</p>
-                    <a href="{{ route('site-view.index') }}" class="btn btn-success btn-sm px-4">View</a>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
 @endsection
