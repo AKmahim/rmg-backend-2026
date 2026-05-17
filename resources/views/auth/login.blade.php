@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Event Name - Login</title>
+    <title>GP RMG - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
@@ -29,7 +29,7 @@
                             <div class="text-center w-75 m-auto">
                                 <a href="{{ url('/') }}">
                                     <span>
-                                        <h1 class="color-black">Event Name</h1>
+                                        <h1 class="color-black">GP RMG</h1>
                                     </span>
                                 </a>
                                 <h5 class="text-uppercase text-center font-bold mt-4">Sign In</h5>

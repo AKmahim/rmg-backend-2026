@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Event Name - " name="description" />
-    <meta content="Event Name" name="keywords" />
-    <meta content="Event Name" name="author" />
+    <meta content="GP RMG - " name="description" />
+    <meta content="GP RMG" name="keywords" />
+    <meta content="GP RMG" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('admin') }}/assets/images/logo-ddiexpo.png">
@@ -150,10 +150,10 @@
                     <a href="{{ url('/dashboard') }}" class="logo text-center">
                         <span class="logo-lg">
                             {{-- <img src="{{ asset('admin') }}/assets/images/logo-light.png" alt="" height="16"> --}}
-                            <span class="logo-lg-text-light">Event Name</span>
+                            <span class="logo-lg-text-light">GP RMG</span>
                         </span>
                         <span class="logo-sm">
-                            <span class="logo-sm-text-dark">Event Name</span>
+                            <span class="logo-sm-text-dark">GP RMG</span>
                             {{-- <img src="{{ asset('admin') }}/assets/images/logo-sm.png" alt="" height="24"> --}}
                         </span>
                     </a>
@@ -258,7 +258,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    2025 - 2030 &copy; Event Name by <a href="https://xri.com.bd" class="text-muted">XR
+                    2025 - 2030 &copy; GP RMG by <a href="https://xri.com.bd" class="text-muted">XR
                         Interactive</a>
                 </div>
             </div>
