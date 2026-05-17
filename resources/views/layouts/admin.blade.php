@@ -181,7 +181,7 @@
                             </ul>
                         </li> --}}
 
-                        <li class="has-submenu">
+                        {{-- <li class="has-submenu">
                             <a href="{{ route('site-view.index') }}"><i class="ri-video-add-fill"></i>Site View
                                 Statistics</a>
                         </li>
@@ -189,7 +189,7 @@
                        <li class="has-submenu">
                             <a href="{{ route('contents.index') }}">Content Management</a>
                             
-                        </li>
+                        </li> --}}
 
                         <li class="has-submenu">
                             <a href="{{ route('spinner.index') }}"><i class="ri-trophy-line"></i>Spinner Data</a>
