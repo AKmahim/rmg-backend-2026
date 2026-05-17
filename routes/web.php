@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\SiteViewStatisticsController;
 use App\Http\Controllers\admin\ContentController;
+use App\Http\Controllers\admin\SpinnerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,10 @@ Route::middleware('auth')->group(function () {
 
     //route for content management
     Route::resource('contents', ContentController::class)->names('contents');
+
+    // ── Spinner admin routes ───────────────────────────────────────────────────
+    Route::get('/spinner', [SpinnerController::class, 'adminIndex'])->name('spinner.index');
+    Route::get('/spinner/export', [SpinnerController::class, 'exportCsv'])->name('spinner.export');
 });
 
 require __DIR__.'/auth.php';

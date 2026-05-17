@@ -191,6 +191,10 @@
                             
                         </li>
 
+                        <li class="has-submenu">
+                            <a href="{{ route('spinner.index') }}"><i class="ri-trophy-line"></i>Spinner Data</a>
+                        </li>
+
                         
 
 

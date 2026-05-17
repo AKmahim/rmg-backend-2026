@@ -9,9 +9,141 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
+// Prize labels matching the frontend campaign-data.ts prizes array
+// index 0 = 1st prize (score 75-90), 1 = 2nd (60-74), 2 = 3rd (50-59), -1 = no prize
+
 class SpinnerController extends Controller
 {
-    // ─── Send OTP ────────────────────────────────────────────────────────────────
+    // Prize label map (mirrors frontend prizes array)
+    private const PRIZE_LABELS = [
+        0  => '১ম পুরস্কার',
+        1  => '২য় পুরস্কার',
+        2  => '৩য় পুরস্কার',
+        -1 => 'কোনো পুরস্কার নেই',
+    ];
+
+    // ─── Admin: List with filters ─────────────────────────────────────────────
+
+    public function adminIndex(Request $request)
+    {
+        $query = spinner::query();
+
+        if ($request->filled('phone')) {
+            $query->where('phone_number', 'like', '%' . $request->phone . '%');
+        }
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        if ($request->filled('prize')) {
+            $score = (int) $request->prize;
+            if ($score === 0) {         // 1st prize
+                $query->whereBetween('score', [75, 90]);
+            } elseif ($score === 1) {   // 2nd prize
+                $query->whereBetween('score', [60, 74]);
+            } elseif ($score === 2) {   // 3rd prize
+                $query->whereBetween('score', [50, 59]);
+            } elseif ($score === -1) {  // no prize
+                $query->where(function ($q) {
+                    $q->whereNull('score')->orWhere('score', '<', 50);
+                });
+            }
+        }
+
+        $totalPlayers  = (clone $query)->count();
+        $prizeWinners  = (clone $query)->where('score', '>=', 50)->count();
+        $totalPlayCount = (clone $query)->sum('played_count');
+
+        $spinners = $query->orderByDesc('created_at')->paginate(20)->withQueryString();
+
+        return view('admin.spinner.index', compact('spinners', 'totalPlayers', 'prizeWinners', 'totalPlayCount'));
+    }
+
+    // ─── Admin: Export CSV ────────────────────────────────────────────────────
+
+    public function exportCsv(Request $request)
+    {
+        $query = spinner::query();
+
+        if ($request->filled('phone')) {
+            $query->where('phone_number', 'like', '%' . $request->phone . '%');
+        }
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+        if ($request->filled('prize')) {
+            $score = (int) $request->prize;
+            if ($score === 0) {
+                $query->whereBetween('score', [75, 90]);
+            } elseif ($score === 1) {
+                $query->whereBetween('score', [60, 74]);
+            } elseif ($score === 2) {
+                $query->whereBetween('score', [50, 59]);
+            } elseif ($score === -1) {
+                $query->where(function ($q) {
+                    $q->whereNull('score')->orWhere('score', '<', 50);
+                });
+            }
+        }
+
+        $records = $query->orderByDesc('created_at')->get();
+
+        $filename = 'spinner_data_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma'              => 'no-cache',
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires'             => '0',
+        ];
+
+        $callback = function () use ($records) {
+            $handle = fopen('php://output', 'w');
+            // BOM for Excel UTF-8
+            fputs($handle, "\xEF\xBB\xBF");
+
+            fputcsv($handle, ['#', 'Phone Number', 'Score', 'Prize', 'Played Count', 'IP Address', 'User Agent', 'Date']);
+
+            foreach ($records as $i => $row) {
+                $prize = $this->getPrizeLabel($row->score);
+                fputcsv($handle, [
+                    $i + 1,
+                    $row->phone_number,
+                    $row->score ?? 0,
+                    $prize,
+                    $row->played_count,
+                    $row->ip_address,
+                    $row->user_agent,
+                    $row->created_at->format('Y-m-d H:i:s'),
+                ]);
+            }
+
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    // Helper: derive prize label from score
+    private function getPrizeLabel(?int $score): string
+    {
+        if ($score === null)      return self::PRIZE_LABELS[-1];
+        if ($score >= 75)        return self::PRIZE_LABELS[0];
+        if ($score >= 60)        return self::PRIZE_LABELS[1];
+        if ($score >= 50)        return self::PRIZE_LABELS[2];
+        return self::PRIZE_LABELS[-1];
+    }
+
+
 
     public function sendOtp(Request $request)
     {
