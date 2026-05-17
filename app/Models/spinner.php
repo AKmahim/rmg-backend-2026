@@ -13,6 +13,7 @@ class spinner extends Model
         'score',
         'ip_address',
         'user_agent',// mobile or desktop
+        'played_count', // number of times the user has played
         
 
     ];
