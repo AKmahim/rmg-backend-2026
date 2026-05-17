@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\SiteViewStatisticsController;
 use App\Http\Controllers\admin\ContentController;
 use App\Http\Controllers\admin\SpinnerController;
+use App\Http\Controllers\admin\QuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,10 @@ Route::middleware('auth')->group(function () {
     // ── Spinner admin routes ───────────────────────────────────────────────────
     Route::get('/spinner', [SpinnerController::class, 'adminIndex'])->name('spinner.index');
     Route::get('/spinner/export', [SpinnerController::class, 'exportCsv'])->name('spinner.export');
+
+    // ── Quiz admin routes ─────────────────────────────────────────────────────
+    Route::get('/quiz', [QuizController::class, 'adminIndex'])->name('quiz.index');
+    Route::get('/quiz/export', [QuizController::class, 'exportCsv'])->name('quiz.export');
 });
 
 require __DIR__.'/auth.php';

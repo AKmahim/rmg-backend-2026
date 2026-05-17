@@ -195,6 +195,10 @@
                             <a href="{{ route('spinner.index') }}"><i class="ri-trophy-line"></i>Spinner Data</a>
                         </li>
 
+                        <li class="has-submenu">
+                            <a href="{{ route('quiz.index') }}"><i class="ri-question-answer-line"></i>Quiz Data</a>
+                        </li>
+
                         
 
 
