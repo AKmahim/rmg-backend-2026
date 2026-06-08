@@ -71,6 +71,13 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group mb-2">
+                                    <label for="qr">QR Code</label>
+                                    <input type="text" class="form-control" id="qr" name="qr"
+                                        placeholder="e.g. f1" value="{{ request('qr') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group mb-2">
                                     <label for="start_date">From Date</label>
                                     <input type="date" class="form-control" id="start_date" name="start_date"
                                         value="{{ request('start_date') }}">
@@ -91,7 +98,7 @@
                                     <a href="{{ route('spinner.index') }}" class="btn btn-secondary">
                                         <i class="fe-x"></i> Reset
                                     </a>
-                                    <a href="{{ route('spinner.export') }}?{{ http_build_query(request()->only(['phone','prize','start_date','end_date'])) }}"
+                                    <a href="{{ route('spinner.export') }}?{{ http_build_query(request()->only(['phone','prize','qr','start_date','end_date'])) }}"
                                         class="btn btn-success">
                                         <i class="fe-download"></i> Export CSV
                                     </a>
@@ -110,6 +117,7 @@
                                     <th>Score</th>
                                     <th>Prize</th>
                                     <th>Played Count</th>
+                                    <th>QR Code</th>
                                     <th>IP Address</th>
                                     <th>Device</th>
                                     <th>Date</th>
@@ -147,6 +155,7 @@
                                         <td>
                                             <span class="badge badge-info">{{ $row->played_count }}x</span>
                                         </td>
+                                        <td>{{ $row->qr ?? '—' }}</td>
                                         <td>{{ $row->ip_address ?? 'N/A' }}</td>
                                         <td>
                                             <i class="fe-{{ $device === 'Mobile' ? 'smartphone' : 'monitor' }}"></i>
@@ -156,7 +165,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted py-4">No records found.</td>
+                                        <td colspan="9" class="text-center text-muted py-4">No records found.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

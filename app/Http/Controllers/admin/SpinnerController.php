@@ -32,6 +32,10 @@ class SpinnerController extends Controller
             $query->where('phone_number', 'like', '%' . $request->phone . '%');
         }
 
+        if ($request->filled('qr')) {
+            $query->where('qr', $request->qr);
+        }
+
         if ($request->filled('start_date')) {
             $query->whereDate('created_at', '>=', $request->start_date);
         }
@@ -73,6 +77,9 @@ class SpinnerController extends Controller
         if ($request->filled('phone')) {
             $query->where('phone_number', 'like', '%' . $request->phone . '%');
         }
+        if ($request->filled('qr')) {
+            $query->where('qr', $request->qr);
+        }
         if ($request->filled('start_date')) {
             $query->whereDate('created_at', '>=', $request->start_date);
         }
@@ -111,7 +118,7 @@ class SpinnerController extends Controller
             // BOM for Excel UTF-8
             fputs($handle, "\xEF\xBB\xBF");
 
-            fputcsv($handle, ['#', 'Phone Number', 'Score', 'Prize', 'Played Count', 'IP Address', 'User Agent', 'Date']);
+            fputcsv($handle, ['#', 'Phone Number', 'Score', 'Prize', 'Played Count', 'QR Code', 'IP Address', 'User Agent', 'Date']);
 
             foreach ($records as $i => $row) {
                 $prize = $this->getPrizeLabel($row->score);
@@ -121,6 +128,7 @@ class SpinnerController extends Controller
                     $row->score ?? 0,
                     $prize,
                     $row->played_count,
+                    $row->qr ?? '',
                     $row->ip_address,
                     $row->user_agent,
                     $row->created_at->format('Y-m-d H:i:s'),
