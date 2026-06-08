@@ -99,6 +99,7 @@ class QuizController extends Controller
             'phone'       => ['required', 'regex:/^01[3-9]\d{8}$/'],
             'score'       => ['required', 'integer', 'min:0'],
             'prize_index' => ['required', 'integer', 'min:-1'],
+            'qr'          => ['nullable', 'string', 'max:50'],
         ]);
 
         if ($validator->fails()) {
@@ -128,6 +129,7 @@ class QuizController extends Controller
             'ip_address'   => $request->ip(),
             'user_agent'   => $request->userAgent(),
             'played_count' => 1,
+            'qr'           => $request->input('qr'),
         ]);
 
         return response()->json([
@@ -172,6 +174,9 @@ class QuizController extends Controller
         if ($request->filled('phone')) {
             $query->where('phone_number', 'like', '%' . $request->phone . '%');
         }
+        if ($request->filled('qr')) {
+            $query->where('qr', $request->qr);
+        }
         if ($request->filled('start_date')) {
             $query->whereDate('created_at', '>=', $request->start_date);
         }
@@ -211,6 +216,9 @@ class QuizController extends Controller
         if ($request->filled('phone')) {
             $query->where('phone_number', 'like', '%' . $request->phone . '%');
         }
+        if ($request->filled('qr')) {
+            $query->where('qr', $request->qr);
+        }
         if ($request->filled('start_date')) {
             $query->whereDate('created_at', '>=', $request->start_date);
         }
@@ -246,7 +254,7 @@ class QuizController extends Controller
         $callback = function () use ($records) {
             $handle = fopen('php://output', 'w');
             fputs($handle, "\xEF\xBB\xBF");
-            fputcsv($handle, ['#', 'Phone Number', 'Score', 'Prize', 'Played Count', 'IP Address', 'User Agent', 'Date']);
+            fputcsv($handle, ['#', 'Phone Number', 'Score', 'Prize', 'Played Count', 'QR Code', 'IP Address', 'User Agent', 'Date']);
 
             foreach ($records as $i => $row) {
                 fputcsv($handle, [
@@ -255,6 +263,7 @@ class QuizController extends Controller
                     $row->score ?? 0,
                     $this->getPrizeLabel($row->score),
                     $row->played_count,
+                    $row->qr ?? '',
                     $row->ip_address,
                     $row->user_agent,
                     $row->created_at->format('Y-m-d H:i:s'),
