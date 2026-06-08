@@ -14,6 +14,7 @@ class spinner extends Model
         'ip_address',
         'user_agent',// mobile or desktop
         'played_count', // number of times the user has played
+        'qr', //from which qr code user came from
         
 
     ];

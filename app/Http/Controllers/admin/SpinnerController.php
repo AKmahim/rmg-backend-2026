@@ -226,6 +226,7 @@ class SpinnerController extends Controller
             'phone'       => ['required', 'regex:/^01[3-9]\d{8}$/'],
             'score'       => ['required', 'integer', 'min:0'],
             'prize_index' => ['required', 'integer', 'min:-1'],
+            'qr'          => ['nullable', 'string', 'max:50'],
         ]);
 
         if ($validator->fails()) {
@@ -257,6 +258,7 @@ class SpinnerController extends Controller
             'ip_address'   => $request->ip(),
             'user_agent'   => $request->userAgent(),
             'played_count' => 1,
+            'qr'           => $request->input('qr'),
         ]);
 
         return response()->json([
